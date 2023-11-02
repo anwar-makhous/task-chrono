@@ -47,7 +47,7 @@
 
         <!-- Task Elements -->
         <div class="task" *ngFor="let task of tasks" (click)="onTaskClick(task)"
-          [ngClass]="{ 'completed': task.completed }">
+          [ngClass]="{ 'running': task.running }">
           <div class="task-text">
             <p>{{ task.title }}</p>
           </div>

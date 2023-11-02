@@ -46,9 +46,9 @@ export class TaskService {
     return this.webReqService.post(`projects/${projectId}/tasks`, { title });
   }
 
-  complete(task: Task) {
+  run(task: Task) {
     return this.webReqService.patch(`projects/${task._projectId}/tasks/${task._id}`, {
-      completed: !task.completed
+      running: !task.running
     });
   }
 }

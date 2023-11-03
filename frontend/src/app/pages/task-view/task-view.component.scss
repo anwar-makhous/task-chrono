@@ -67,7 +67,7 @@
 
         &.is-active {
             background-color: #cff8ef;
-            color: $dark-green;
+            color: $dark-orange;
         }
     }
 }
@@ -100,7 +100,6 @@
     }
 
     &.running .task-text {
-        text-decoration: line-through;
         opacity: 0.8;
     }
 
@@ -135,4 +134,10 @@
 
 .logoutBtn {
     margin-top: 10px;
+}
+
+.start-button {
+    margin-right: 10px;
+    margin-left: 10px;
+    border-color: $orange;
 }

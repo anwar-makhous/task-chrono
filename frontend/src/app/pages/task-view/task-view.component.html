@@ -49,27 +49,41 @@
         </div>
 
         <!-- Task Elements -->
-        <div class="task" *ngFor="let task of tasks" (click)="onTaskClick(task)"
-          [ngClass]="{ 'running': task.running }">
+        <div class="task" *ngFor="let task of tasks" [ngClass]="{ 'running': task.running }">
           <div class="task-text">
             <p>{{ task.title }}</p>
           </div>
-          <div class="task-buttons">
+          <div class="task-menu" style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="time-box">
+              {{ formatTime(task.totalMinutes) }}
+            </div>
+            <button class="button start-button" (click)="onStartStopClick(task)">
+              <i class="fas" [ngClass]="{'fa-pause': task.running, 'fa-play': !task.running}"></i>
 
-            <button class="button" [routerLink]="['/projects', selectedProjectId, 'edit-task', task._id]">
-              <div class="icon">
-                <i class="fas fa-edit"></i>
-              </div>
             </button>
-
-            <button class="button is-danger" (click)="onDeleteTaskClick(task._id)" style="margin-left: 10px;">
-              <div class="icon">
-                <i class="fas fa-trash"></i>
+            <div class="dropdown is-right is-hoverable">
+              <div class="dropdown-trigger">
+                <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                  <div class="vertical-dots">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </div>
+                </button>
               </div>
-            </button>
-
+              <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                <div class="dropdown-content">
+                  <a class="dropdown-item" [routerLink]="['/projects', selectedProjectId, 'edit-task', task._id]">
+                    <i class="fas fa-edit"></i> Edit
+                  </a>
+                  <a class="dropdown-item is-danger" (click)="onDeleteTaskClick(task._id)">
+                    <i class="fas fa-trash"></i> Delete
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+
+
 
         <h3 class="empty-state-text" *ngIf="tasks.length === 0">There are no tasks here! Click the add button to create
           a new task.</h3>

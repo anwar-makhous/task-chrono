@@ -14,6 +14,15 @@ const TaskSchema = new mongoose.Schema({
     running: {
         type: Boolean,
         default: false
+    },
+    startTime: {
+        type: Date, // Use Date type for timestamps
+    },
+    stopTime: {
+        type: Date,
+    },
+    totalMinutes: {
+        type: Number, // Assuming this will store the duration in minutes
     }
 })
 

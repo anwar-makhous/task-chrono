@@ -48,7 +48,9 @@ export class TaskService {
 
   run(task: Task) {
     return this.webReqService.patch(`projects/${task._projectId}/tasks/${task._id}`, {
-      running: !task.running
+      running: !task.running,
+      totalSeconds: task.totalSeconds,
+      lastRunDate: task.lastRunDate
     });
   }
 }

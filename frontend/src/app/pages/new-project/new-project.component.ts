@@ -17,7 +17,6 @@ export class NewProjectComponent implements OnInit {
 
   createProject(title: string) {
     this.taskService.createProject(title).subscribe((project: Project) => {
-      console.log(project);
       // Now we navigate to /projects/task._id
       this.router.navigate(['/projects', project._id]);
     });

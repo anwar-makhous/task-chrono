@@ -18,7 +18,6 @@ export class EditProjectComponent implements OnInit {
     this.route.params.subscribe(
       (params: Params) => {
         this.projectId = params.projectId;
-        console.log(params.projectId);
       }
     )
   }

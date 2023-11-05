@@ -55,9 +55,10 @@
           </div>
           <div class="task-menu" style="display: flex; justify-content: space-between; align-items: center;">
             <div class="time-box">
-              {{ formatTime(task.totalMinutes) }}
+              {{ formatTime(task.totalSeconds) }}
             </div>
-            <button class="button start-button" (click)="onStartStopClick(task)">
+
+            <button class="button start-button" (click)="onTaskClick(task)">
               <i class="fas" [ngClass]="{'fa-pause': task.running, 'fa-play': !task.running}"></i>
 
             </button>

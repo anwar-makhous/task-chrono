@@ -21,7 +21,6 @@ export class LoginPageComponent implements OnInit {
         // we have logged in successfully
         this.router.navigate(['/projects']);
       }
-      console.log(res);
 
     });
   }

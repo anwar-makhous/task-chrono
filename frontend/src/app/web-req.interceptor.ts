@@ -62,7 +62,6 @@ export class WebReqInterceptor implements HttpInterceptor {
       // we want to call a method in the auth service to send a request to refresh the access token
       return this.authService.getNewAccessToken().pipe(
         tap(() => {
-          console.log("Access Token Refreshed!");
           this.refreshingAccessToken = false;
           this.accessTokenRefreshed.next();
         })

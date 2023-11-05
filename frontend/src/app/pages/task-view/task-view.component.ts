@@ -29,6 +29,12 @@ export class TaskViewComponent implements OnInit {
           this.selectedProjectId = params.projectId;
           this.taskService.getTasks(params.projectId).subscribe((tasks: Task[]) => {
             this.tasks = tasks;
+            // add difference in seconds for running tasks
+            this.tasks.forEach(task => {
+              if (task.running) {
+                task.totalSeconds += this.calculateTimeDifferenceInSeconds(new Date(task.lastRunDate));
+              }
+            });
           })
         } else {
           this.tasks = undefined;
@@ -45,33 +51,48 @@ export class TaskViewComponent implements OnInit {
       // Update the time display for each task
       this.tasks.forEach(task => {
         if (task.running) {
-          task.totalMinutes = (task.totalMinutes || 0) + 1;
+          task.totalSeconds = (task.totalSeconds || 0) + 1;
         }
       });
     });
 
   }
 
-  onTaskClick(task: Task) {
+  onTaskClick(task: Task): void {
+    if (task.running) {
+      task.lastRunDate = new Date();
+    }
     // we want to set the task to running
     this.taskService.run(task).subscribe(() => {
       // the task has been set to running successfully
-      console.log("Task is running!");
       task.running = !task.running;
     })
+  }
+
+  formatTime(totalSeconds: number): string {
+    const hours = Math.floor(totalSeconds / 3600) || 0;
+    const minutes = Math.floor((totalSeconds % 3600) / 60) || 0;
+    const seconds = totalSeconds % 60 || 0;
+
+    const formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    return formattedTime;
+  }
+
+  calculateTimeDifferenceInSeconds(targetDate: Date): number {
+    const currentDate = new Date();
+    const differenceInSeconds = Math.floor((currentDate.getTime() - targetDate.getTime()) / 1000);
+    return differenceInSeconds;
   }
 
   onDeleteProjectClick() {
     this.taskService.deleteProject(this.selectedProjectId).subscribe((res: any) => {
       this.router.navigate(['/projects']);
-      console.log(res);
     })
   }
 
   onDeleteTaskClick(id: string) {
     this.taskService.deleteTask(this.selectedProjectId, id).subscribe((res: any) => {
       this.tasks = this.tasks.filter(val => val._id !== id);
-      console.log(res);
     })
   }
 
@@ -79,38 +100,10 @@ export class TaskViewComponent implements OnInit {
     this.authService.logout()
   }
 
-  // Function to start or stop the timer when the "Start/Stop" button is clicked
-  onStartStopClick(task: Task): void {
-    // Ensure that the click event only works on the "Start/Stop" button
-    if (task.running) {
-      // Stop the timer
-      task.stopTime = new Date();
-      task.running = false;
-      // Calculate the total duration in minutes (assuming startTime and stopTime are defined)
-      task.totalMinutes = (task.stopTime.getTime() - task.startTime.getTime()) / 60000;
-      // You can save this task data to your backend or update it as needed
-    } else {
-      // Start the timer
-      task.startTime = new Date();
-      task.running = true;
-    }
-  }
-
   ngOnDestroy() {
     // Unsubscribe from the timer when the component is destroyed
     if (this.timerSubscription) {
       this.timerSubscription.unsubscribe();
     }
-  }
-
-  // Function to format the time display as "00:00:00" with rounded seconds
-  formatTime(totalMinutes: number | undefined): string {
-    if (totalMinutes !== undefined) {
-      const hours = Math.floor(totalMinutes / 60 / 60);
-      const minutes = Math.floor((totalMinutes / 60) % 60);
-      const seconds = Math.round(totalMinutes % 60); // Round to the nearest integer
-      return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    }
-    return '00:00:00';
   }
 }

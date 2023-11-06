@@ -3,7 +3,6 @@ import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { Task } from '../models/task.model';
 import { Project } from '../models/project.model';
-import { TaskViewComponent } from '../pages/task-view/task-view.component';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +20,10 @@ export class ReportService {
     return formattedTime;
   }
 
+  formatStartDate(startDate: Date): String {
+    return new Date(startDate).toDateString() + " " + new Date(startDate).toLocaleTimeString();
+  }
+
   generatePDF(project: Project, tasks: Task[]) {
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -29,8 +32,8 @@ export class ReportService {
     content.push("Project title: " + project.title);
     content.push("\n\n");
 
-    const header = ['Task title', 'Time Spent'];
-    const bodyData = tasks.map(task => [task.title, this.formatTime(task.totalSeconds)]);
+    const header = ['Task title', 'Start Date', 'Time Spent'];
+    const bodyData = tasks.map(task => [task.title, this.formatStartDate(task.startDate), this.formatTime(task.totalSeconds)]);
 
     const tableBody = [header];
     for (const row of bodyData) {
@@ -40,7 +43,7 @@ export class ReportService {
     const table = {
       table: {
         headerRows: 1,
-        widths: ['auto', 'auto'],
+        widths: ['auto', 'auto', 'auto'],
         body: tableBody,
       },
     };

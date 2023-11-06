@@ -41,9 +41,9 @@ export class TaskService {
     return this.webReqService.get(`projects/${projectId}/tasks`);
   }
 
-  createTask(title: string, projectId: string) {
+  createTask(title: string, projectId: string, startDate: Date) {
     // We want to send a web request to create a task
-    return this.webReqService.post(`projects/${projectId}/tasks`, { title });
+    return this.webReqService.post(`projects/${projectId}/tasks`, { title, startDate });
   }
 
   run(task: Task) {

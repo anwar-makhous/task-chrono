@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { TaskService } from 'src/app/task.service';
+import { TaskService } from 'src/app/services/task.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Task } from 'src/app/models/task.model';
 import { Project } from 'src/app/models/project.model';
-import { AuthService } from 'src/app/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { interval, Subscription } from 'rxjs';
+import { ReportService } from 'src/app/services/report.service';
 
 @Component({
   selector: 'app-task-view',
@@ -18,7 +19,8 @@ export class TaskViewComponent implements OnInit {
 
   selectedProjectId: string;
 
-  constructor(private taskService: TaskService, private route: ActivatedRoute, private router: Router, private authService: AuthService) { }
+  constructor(private taskService: TaskService, private route: ActivatedRoute, private router: Router,
+    private authService: AuthService, private reportService: ReportService) { }
 
   private timerSubscription: Subscription;
 
@@ -94,6 +96,10 @@ export class TaskViewComponent implements OnInit {
     this.taskService.deleteTask(this.selectedProjectId, id).subscribe((res: any) => {
       this.tasks = this.tasks.filter(val => val._id !== id);
     })
+  }
+
+  onGenerateReportClick() {
+    this.reportService.generatePDF(this.projects.find(project => project._id === this.selectedProjectId), this.tasks);
   }
 
   onLogoutClick() {

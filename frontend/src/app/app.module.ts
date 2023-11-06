@@ -9,7 +9,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NewProjectComponent } from './pages/new-project/new-project.component';
 import { NewTaskComponent } from './pages/new-task/new-task.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
-import { WebReqInterceptor } from './web-req.interceptor';
+import { WebReqInterceptor } from './services/web-req.interceptor';
 import { SignupPageComponent } from './pages/signup-page/signup-page.component';
 import { EditProjectComponent } from './pages/edit-project/edit-project.component';
 import { EditTaskComponent } from './pages/edit-task/edit-task.component';

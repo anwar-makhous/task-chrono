@@ -34,7 +34,7 @@ export class TaskViewComponent implements OnInit {
             // add difference in seconds for running tasks
             this.tasks.forEach(task => {
               if (task.running) {
-                task.totalSeconds += this.calculateTimeDifferenceInSeconds(new Date(task.lastRunDate));
+                task.totalSeconds = task.totalSeconds + this.calculateTimeDifferenceInSeconds(new Date(task.lastRunDate));
               }
             });
           })
@@ -61,9 +61,7 @@ export class TaskViewComponent implements OnInit {
   }
 
   onTaskClick(task: Task): void {
-    if (task.running) {
-      task.lastRunDate = new Date();
-    }
+    task.lastRunDate = new Date();
     // we want to set the task to running
     this.taskService.run(task).subscribe(() => {
       // the task has been set to running successfully

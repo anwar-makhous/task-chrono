@@ -19,6 +19,11 @@
         </span>
       </p>
     </div>
+
+    <p *ngIf="invalidLogin==true" class="has-text-danger">
+      Invalid credentials, please check your email and password
+    </p>
+
     <div class="field" style="display: flex; justify-content: flex-end;">
       <p class="control">
         <button class="button is-success has-text-white loginBtn"
